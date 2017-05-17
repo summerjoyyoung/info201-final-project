@@ -1,0 +1,1 @@
+# The R file for single trending topic
