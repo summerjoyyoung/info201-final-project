@@ -12,11 +12,24 @@ spotifyUser <- 'spotify'
 spotifyPlaylist <- '37i9dQZF1DXcBWIGoYBM5M'
 
 # Getitng the songs from the top 50 playlist
-songsURL <- paste("https://api.spotify.com/v1/users/",
+songs.URL <- paste("https://api.spotify.com/v1/users/",
                    spotifyUser, "/playlists/", spotifyPlaylist,
                    "/tracks", sep = "")
-getSongs <- GET(songsURL, spotifyToken)
-startPlaylist <- jsonlite::fromJSON(toJSON(content(getSongs)))
+get.Songs <- GET(songsURL, spotifyToken)
+all.playlist <- jsonlite::fromJSON(toJSON(content(getSongs)))
 
-# According to GitHub- order should be:
-# Track(Artist + Title), Album, Playlist
+all.playlist.flat <- flatten(all.playlist$items)
+
+flat.playlist <- flatten(all.playlist$items) %>% 
+  select(track.name, track.album.name, track.explicit, track.popularity,
+         track.album.album_type)  
+
+GetArtist <- function(artist.list){
+  artists <- unlist(artist.list)[4]
+  return(artists)
+}
+artists <- lapply(flat.playlist$track.artists, GetArtist)
+flat.artists <- unlist(artists)
+
+flat.playlist$track.artist.name <- flat.artists
+
