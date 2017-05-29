@@ -2,63 +2,106 @@ library(devtools)
 library(jsonlite)
 library(httr)
 library(dplyr)
+library(plotly)
 
 #This is all the stuff spotify needs to know before you start
-spotifyEndpoint <- oauth_endpoint(NULL, "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token")
-spotifyApp <- oauth_app("spotify", '87ccb0dca2bc4cac82d82a731fa65295', '5094f0bd6d4b4a368a990909d2a15acd')
-spotifyToken <- oauth2.0_token(spotifyEndpoint, spotifyApp)
+spotify.Endpoint <- oauth_endpoint(NULL, "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/ap1i/token")
+spotify.App <- oauth_app("spotify", '87ccb0dca2bc4cac82d82a731fa65295', '5094f0bd6d4b4a368a990909d2a15acd')
+spotify.Token <- oauth2.0_token(spotify.Endpoint, spotify.App)
 
-#This is me picking my user and my playlist
-#You should be able to get multiple playlists off at once...I will look into this
-#I am specifically grabbing the album ID but I think we can do more including song title and artist so we don't
-#have to look around for it the second time
-spotifyUser <- "1295238919"
-spotifyPlaylist <- "3Xu4Lg4n7kYNYgJNg54K6j"
+#For testing purposes
+user.id <- '1295238919'
+user.profile.url <- paste('https://api.spotify.com/v1/users/', user.id, sep = "")
+get.user.profile <- GET(user.profile.url, spotify.Token)
+user.profile <- fromJSON(toJSON(content(get.user.profile)))
+display.name <- user.profile$display_name
+display.image <- flatten(user.profile$images)$url
 
-playlistTracksURL <- paste("https://api.spotify.com/v1/users/",
-                           spotifyUser,
-                           "/playlists/",
-                           spotifyPlaylist,
-                           "/tracks?fields=total,items(track(album(id)))",
-                           sep="")
 
-getTracks <- GET(playlistTracksURL, spotifyToken) 
-startPlaylist <- jsonlite::fromJSON(toJSON(content(getTracks)))
+#Gets all the user's playlists and puts them in a data frame named flat.all.user.playlists. Removes all the playlists that aren't theirs. 
+all.user.playlists.URL <- paste('https://api.spotify.com/v1/me/playlists', sep = "")
+get.playlists <- GET(all.user.playlists.URL, spotify.Token) 
+all.user.playlists <- jsonlite::fromJSON(toJSON(content(get.playlists)))
+flat.all.user.playlists <- flatten(all.user.playlists$items) %>% 
+  select(id, name, public, external_urls.spotify, tracks.href, tracks.total, owner.id) %>% 
+  filter(owner.id == user.id)
 
-total <- as.matrix(startPlaylist[[1]]$track$album$id)
 
-#If there are more than 100 in the playlist, this handles that - need to customize it to what we want
-if (startPlaylist$total > 100) {
-  offset <- trunc(startPlaylist$total/100)
-  for(i in 1:offset) {
-    playlistTracksURL <- paste("https://api.spotify.com/v1/users/",
-                               spotifyUser,
-                               "/playlists/",
-                               spotifyPlaylist,
-                               "/tracks?fields=items(track(album(id)))&offset="
-                               ,i*100,sep="")
-    getTracks <- GET(playlistTracksURL, spotifyToken)
-    subPlaylist <- jsonlite::fromJSON(toJSON(content(getTracks)))
-    total <- rbind(total, as.matrix(subPlaylist[[1]]$track$album$id))
+
+#Gets all the user's songs and puts them in a data frame named flat.tracks
+GetTracks <- function(playlist.id){
+  get.row <- flat.all.user.playlists %>% filter(unlist(id) == playlist.id)
+  num.songs <- unlist(get.row$tracks.total)
+  offset <- 0
+  first.time <- TRUE
+  
+  if(num.songs > 100){
+    while(num.songs > 100 && num.songs > 0){
+      tracks.url <- paste(unlist(get.row$tracks.href), "/?offset=", offset, sep = "")
+      get.tracks <- GET(tracks.url, spotify.Token)
+      all.tracks <- fromJSON(toJSON(content(get.tracks)))
+      my.tracks <- flatten(all.tracks$items) %>% 
+        select(track.duration_ms, added_at, track.artists, track.id, track.name, 
+               track.popularity, track.album.artists, track.album.id, track.album.name) %>% 
+        filter(!is.null(track.album.name))
+      
+      if(first.time){
+        flat.tracks <- my.tracks
+        first.time <- FALSE
+      } else {
+        flat.tracks <- rbind(flat.tracks, my.tracks)
+      }
+      offset <- offset + 100
+      num.songs <- num.songs - 100
+    }
+    tracks.url <- paste(unlist(get.row$tracks.href), "/?offset=", offset, sep = "")
+    get.tracks <- GET(tracks.url, spotify.Token)
+    all.tracks <- fromJSON(toJSON(content(get.tracks)))
+    my.tracks <- flatten(all.tracks$items) %>% select(track.duration_ms, added_at, track.artists, track.id, track.name, track.popularity, track.album.artists, track.album.id, track.album.name)
+    flat.tracks <- rbind(flat.tracks, my.tracks)
+  } else {
+    tracks.url <- unlist(get.row$tracks.href)
+    get.tracks <- GET(tracks.url, spotify.Token)
+    all.tracks <- fromJSON(toJSON(content(get.tracks)))
+    flat.tracks <- flatten(all.tracks$items) %>% select(track.duration_ms, added_at, track.artists, track.id, track.name, track.popularity, track.album.artists, track.album.id, track.album.name)
   }
+  return(flat.tracks)
 }
 
-#My final data frame with all the album ids
-total <- as.data.frame(total)
+
+tracks <- lapply(flat.all.user.playlists$id, GetTracks)
+flat.tracks <- do.call(rbind, tracks) 
+
+#Gets the artists for each of the songs and puts them in a single column
+GetArtist <- function(artist.list){
+  artists <- unlist(artist.list)[4]
+  return(artists)
+}
+
+artists <- lapply(flat.tracks$track.album.artists, GetArtist)
+flat.artists <- unlist(artists)
+
+#Adds the extra column to flat.tracks
+flat.tracks$artist.name <- flat.artists
+
+#Lets get some random facts about the data! Because people are easily entertained! 1 min = 36,000,000 ms
+duration.ms <- unlist(flat.tracks$track.duration_ms) %>% sum()
+duration.hours <- round(duration.ms / 3600000, 2)
 
 
-#This is me successfully getting several albums 
-id.list <- '0MhtZHWHKaWHcxbGriNVzs,4Ok5jEpeE2rjELaJYQzeFd,5O0s7Us9XA7lre1xURGve0,4svLfrPPk2npPVuI4kXPYg,3yoNZlqerJnsnMN5EDwwBS'
-testalbumsURL <- paste("https://api.spotify.com/v1/albums/?ids=", id.list, sep ="")
-getalbums <- GET(testalbumsURL, spotifyToken)
-albums <- fromJSON(toJSON(content(getalbums)))
-flat.albums <- flatten(albums$albums) %>% select(album_type, genres, id, name, popularity)
+#Gets the popularity of all the tracks and creates a scatter plot of song vs popularity
+popular.tracks <- flat.tracks %>% select(track.id, track.name, track.popularity, artist.name)
 
-#This is me successfully getting a single album
-testalbumURL <- paste("https://api.spotify.com/v1/albums/", total[2,1],sep="")
-testgetAlbum <- GET(testalbumURL, spotifyToken)
-testalbum <- fromJSON(toJSON(content(testgetAlbum)))
+average.popularity <- round(unlist(popular.tracks$track.popularity) %>% sum() / nrow(popular.tracks), 0)
 
-test.name <- testalbum$name
+p <- plot_ly(popular.tracks, x = ~track.name, y = ~track.popularity, type = "scatter", hoverinfo = "text",
+             text = ~paste("Song: ", unlist(track.name), "</br> Artist: ", as.list(artist.name), "</br> Populartiy: ", unlist(track.popularity), sep = "")) %>%  
+  layout(xaxis = list(showticklabels = FALSE, title = "Your Songs"), yaxis = list(title = "Popularity"),
+         title = "The Popularity of Your Songs")
 
+
+all.albums.URL <- 'https://api.spotify.com/v1/albums/3TqvvuCMcTpSjFvAToQT8A'
+get.albums <- GET(all.albums.URL, spotify.Token) 
+all.albums <- jsonlite::fromJSON(toJSON(content(get.albums)))
+album.genres <- all.albums$genres #this is an array and I don't know how to get things out now
 
