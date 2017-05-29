@@ -1,7 +1,8 @@
 # The R file for Top listened song/playlist/album/artist etc.
-
+library(dplyr)
 library(httr)
 library(jsonlite)
+library(devtools)
 
 spotifyEndpoint <- oauth_endpoint(NULL, "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token")
 spotifyApp <- oauth_app("spotify", '87ccb0dca2bc4cac82d82a731fa65295', '5094f0bd6d4b4a368a990909d2a15acd')
