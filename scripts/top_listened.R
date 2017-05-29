@@ -16,8 +16,8 @@ spotifyPlaylist <- '37i9dQZF1DXcBWIGoYBM5M'
 songs.URL <- paste("https://api.spotify.com/v1/users/",
                    spotifyUser, "/playlists/", spotifyPlaylist,
                    "/tracks", sep = "")
-get.Songs <- GET(songsURL, spotifyToken)
-all.playlist <- jsonlite::fromJSON(toJSON(content(getSongs)))
+get.Songs <- GET(songs.URL, spotifyToken)
+all.playlist <- jsonlite::fromJSON(toJSON(content(get.Songs)))
 
 all.playlist.flat <- flatten(all.playlist$items)
 
