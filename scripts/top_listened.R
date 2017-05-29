@@ -20,9 +20,10 @@ all.playlist <- jsonlite::fromJSON(toJSON(content(getSongs)))
 
 all.playlist.flat <- flatten(all.playlist$items)
 
+# Creates the dataframe that has the information from the top 50 playlist.
 flat.playlist <- flatten(all.playlist$items) %>% 
-  select(track.name, track.album.name, track.explicit, track.popularity,
-         track.album.album_type)  
+                 select(track.name, track.album.name, track.explicit, track.popularity,
+                 track.album.album_type)  
 
 GetArtist <- function(artist.list){
   artists <- unlist(artist.list)[4]
@@ -31,5 +32,6 @@ GetArtist <- function(artist.list){
 artists <- lapply(flat.playlist$track.artists, GetArtist)
 flat.artists <- unlist(artists)
 
+# Adds the artist name to the dataframe I had created above
 flat.playlist$track.artist.name <- flat.artists
 
