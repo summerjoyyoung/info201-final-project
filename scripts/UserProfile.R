@@ -95,7 +95,7 @@ popular.tracks <- flat.tracks %>% select(track.id, track.name, track.popularity,
 
 average.popularity <- round(unlist(popular.tracks$track.popularity) %>% sum() / nrow(popular.tracks), 0)
 
-p <- plot_ly(popular.tracks, x = ~track.name, y = ~track.popularity, type = "scatter", hoverinfo = "text",
+plot_ly(popular.tracks, x = ~track.name, y = ~track.popularity, type = "scatter", hoverinfo = "text",
              text = ~paste("Song: ", unlist(track.name), "</br> Artist: ", as.list(artist.name), "</br> Populartiy: ", unlist(track.popularity), sep = "")) %>%  
   layout(xaxis = list(showticklabels = FALSE, title = "Your Songs"), yaxis = list(title = "Popularity"),
          title = "The Popularity of Your Songs")
