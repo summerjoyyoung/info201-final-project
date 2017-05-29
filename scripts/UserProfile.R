@@ -35,6 +35,7 @@ GetTracks <- function(playlist.id){
   offset <- 0
   first.time <- TRUE
   
+  #If there are more than 100 songs in the playlist, get all the songs
   if(num.songs > 100){
     while(num.songs > 100 && num.songs > 0){
       tracks.url <- paste(unlist(get.row$tracks.href), "/?offset=", offset, sep = "")
@@ -100,7 +101,7 @@ p <- plot_ly(popular.tracks, x = ~track.name, y = ~track.popularity, type = "sca
          title = "The Popularity of Your Songs")
 
 
-all.albums.URL <- 'https://api.spotify.com/v1/albums/3TqvvuCMcTpSjFvAToQT8A'
+all.albums.URL <- 'https://api.spotify.com/v1/albums/3MHTGwjWJhfcc3yBnvo6yh'
 get.albums <- GET(all.albums.URL, spotify.Token) 
 all.albums <- jsonlite::fromJSON(toJSON(content(get.albums)))
 album.genres <- all.albums$genres #this is an array and I don't know how to get things out now
