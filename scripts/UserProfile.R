@@ -80,26 +80,24 @@ GetTracksDataset <- function(user.id){
   return(flat.tracks)
 }
 
-#Takes in a dataset of the user's tracks and returns the duration of all their songs in hours
-GetDuration <- function(tracks.dataset){
-  spotifyR <- oauth_endpoint(authorize = "https://accounts.spotify.com/authorize", access = "https://accounts.spotify.com/api/token")
-  myapp <- oauth_app('Trendy Tunes', '87ccb0dca2bc4cac82d82a731fa65295', '5094f0bd6d4b4a368a990909d2a15acd')
-  spotify.Token <- oauth2.0_token(spotifyR, myapp, scope = "playlist-modify-public")
-  
+#Takes in a user ID and returns the duration of all their songs in hours
+GetDuration <- function(user.id){
+  tracks.dataset <- GetTracksDataset(user.id)
   duration.ms <- unlist(tracks.dataset$track.duration_ms) %>% sum()
   duration.hours <- round(duration.ms / 3600000, 2)
   
   return(duration.hours)
 }
 
-#Takes in a dataset of the user's tracks and creates a graph, plotting the track vs track popularity
-CreateGraph <- function(tracks.dataset){
+#Takes in a a user ID and creates a graph, plotting the track vs track popularity
+CreateGraph <- function(user.id){
+  tracks.dataset <- GetTracksDataset(user.id)
   popular.tracks <- tracks.dataset %>% select(track.id, track.name, track.popularity, artist.name)
   
   average.popularity <- round(unlist(popular.tracks$track.popularity) %>% sum() / nrow(popular.tracks), 0)
   
   plot_ly(popular.tracks, x = ~track.name, y = ~track.popularity, type = "scatter", hoverinfo = "text",
-          text = ~paste("Song: ", unlist(track.name), "</br> Artist: ", as.list(artist.name), "</br> Populartiy: ", unlist(track.popularity), sep = "")) %>%  
+          text = ~paste("Song: ", unlist(track.name), "</br> Artist: ", as.list(artist.name), "</br> Popularity: ", unlist(track.popularity), sep = "")) %>%  
     layout(xaxis = list(showticklabels = FALSE, title = "Your Songs"), yaxis = list(title = "Popularity"),
            title = "The Popularity of Your Songs")
 }
@@ -111,7 +109,6 @@ GetImage <- function(user.id){
   myapp <- oauth_app('Trendy Tunes', '87ccb0dca2bc4cac82d82a731fa65295', '5094f0bd6d4b4a368a990909d2a15acd')
   spotify.Token <- oauth2.0_token(spotifyR, myapp, scope = "playlist-modify-public")
   
-  
   user.profile.url <- paste('https://api.spotify.com/v1/users/', user.id, sep = "")
   get.user.profile <- GET(user.profile.url, spotify.Token)
   user.profile <- fromJSON(toJSON(content(get.user.profile)))
@@ -119,5 +116,5 @@ GetImage <- function(user.id){
   return(display.image)
 }
 
-
+CreateGraph('1295238919')
 

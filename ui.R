@@ -4,11 +4,10 @@ shinyUI(navbarPage(
   titlePanel("Trendy Tunes"),
   sidebarLayout(
     sidebarPanel(
-      textInput("user.id", "Enter the user id"),
-      verbatimTextOutput("value")
+      textInput('user.id', "Enter the user id")
     ),
     mainPanel(
-      h1("Test text")
+      plotlyOutput('value')
     )
   )
 ))
