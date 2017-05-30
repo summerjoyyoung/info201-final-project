@@ -3,6 +3,7 @@ library(httr)
 library(dplyr)
 
 
+
 # API information
 
 endpoint.spotify <- oauth_endpoint(NULL, "https://accounts.spotify.com/authorize", "https://accounts.spotify.com/api/token")
