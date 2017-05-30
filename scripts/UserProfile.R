@@ -12,12 +12,12 @@ library(plotly)
 spotifyR <- oauth_endpoint(authorize = "https://accounts.spotify.com/authorize", access = "https://accounts.spotify.com/api/token")
 #if (packageVersion('httr') > "0.6.1"){Sys.setenv("HTTR_SERVER_PORT" = "1410/")}
 myapp <- oauth_app('Trendy Tunes', '87ccb0dca2bc4cac82d82a731fa65295', '5094f0bd6d4b4a368a990909d2a15acd')
-token <- oauth2.0_token(spotifyR, myapp, scope = "playlist-read-private")
+spotify.Token <- oauth2.0_token(spotifyR, myapp, scope = "playlist-modify-public")
 
 #For testing purposes
 user.id <- '1295238919'
 user.profile.url <- paste('https://api.spotify.com/v1/users/', user.id, sep = "")
-get.user.profile <- GET(user.profile.url, token)
+get.user.profile <- GET(user.profile.url, spotify.Token)
 user.profile <- fromJSON(toJSON(content(get.user.profile)))
 display.name <- user.profile$display_name
 display.image <- flatten(user.profile$images)$url
