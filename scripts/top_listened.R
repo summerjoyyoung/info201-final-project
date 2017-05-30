@@ -13,9 +13,7 @@ spotifyUser <- 'spotify'
 spotifyPlaylist <- '37i9dQZF1DXcBWIGoYBM5M'
 
 # Getitng the songs from the top 50 playlist
-songs.URL <- paste("https://api.spotify.com/v1/users/",
-                   spotifyUser, "/playlists/", spotifyPlaylist,
-                   "/tracks", sep = "")
+songs.URL <- paste("https://api.spotify.com/v1/users/", spotifyUser, "/playlists/", spotifyPlaylist, "/tracks", sep = "")
 get.Songs <- GET(songs.URL, spotifyToken)
 all.playlist <- jsonlite::fromJSON(toJSON(content(get.Songs)))
 
@@ -23,8 +21,7 @@ all.playlist.flat <- flatten(all.playlist$items)
 
 # Creates the dataframe that has the information from the top 50 playlist.
 flat.playlist <- flatten(all.playlist$items) %>% 
-                 select(track.name, track.album.name, track.explicit, track.popularity,
-                 track.id, track.album.album_type)  
+                 select(track.name, track.album.name, track.explicit, track.popularity, track.id, track.album.album_type)  
 
 GetArtist <- function(artist.list){
   artists <- unlist(artist.list)[4]
