@@ -30,7 +30,7 @@ GetArtist <- function(artist.list){
   artists <- unlist(artist.list)[4]
   return(artists)
 }
-artists <- lapply(flat.playlist$track.artists, GetArtist)
+artists <- lapply(all.playlist.flat$track.artists, GetArtist)
 flat.artists <- unlist(artists)
 
 # Adds the artist name to the dataframe I had created above
