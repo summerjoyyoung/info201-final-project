@@ -85,8 +85,9 @@ GetDuration <- function(user.id){
   tracks.dataset <- GetTracksDataset(user.id)
   duration.ms <- unlist(tracks.dataset$track.duration_ms) %>% sum()
   duration.hours <- round(duration.ms / 3600000, 2)
+  track.info <- paste("You have ", nrow(tracks.dataset), " songs in all your public playlists which totals to ", duration.hours, " hours of music.", sep = "")
   
-  return(duration.hours)
+  return(track.info)
 }
 
 #Takes in a a user ID and creates a graph, plotting the track vs track popularity
@@ -115,6 +116,4 @@ GetImage <- function(user.id){
   display.image <- flatten(user.profile$images)$url
   return(display.image)
 }
-
-CreateGraph('1295238919')
 
