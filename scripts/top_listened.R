@@ -34,4 +34,5 @@ flat.artists <- unlist(artists)
 flat.playlist$track.artist.name <- flat.artists
 
 
-# Using the track id, you can get the genre
+# Making a chart that shows information based on popularity
+
