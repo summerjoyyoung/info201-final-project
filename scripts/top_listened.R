@@ -38,7 +38,7 @@ official.playlist <- cbind(flat.playlist, df.artists)
 
 # Making a chart that shows information based on popularity
 top.50.graph <- plot_ly(official.playlist, x = ~track.name, y = ~track.popularity, 
-                        color = ~track.name,
+                        color = ~track.explicit,
                         type = "scatter", hoverinfo = "text", 
                         text = ~paste("Song: ", unlist(track.name), "</br> Artist: ", track.album.artists, 
                                       "</br> Popularity: ", unlist(track.popularity), sep = "")) %>%  
