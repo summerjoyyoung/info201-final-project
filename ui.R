@@ -7,7 +7,7 @@ shinyUI(navbarPage(
     sidebarPanel(
       textInput('user.id', "Enter the user id", "1295238919"), 
       textInput('playlist.id', "Enter the playlist id", "37i9dQZF1DX4JAvHpjipBk"),
-      textInput('artist.name', "Enter the name of an artist to their top songs", "Jimi Hendrix")
+      textInput('artist.name', "Enter the name of an artist to their top songs", "pink")
     ),
     mainPanel(
       tabsetPanel(

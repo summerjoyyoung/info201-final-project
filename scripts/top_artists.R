@@ -89,16 +89,17 @@ artists.top.ten.frame <- function(artist.name.search) {
     Popularity <- c(Popularity, artist.results$tracks$popularity[[i]])
     Song <- c(Song, artist.results$tracks$name[[i]])
     Album <- c(Album, artist.results$tracks$album$name[[i]])
-    Preview <- c(Preview, artist.results$tracks$preview_url[[i]])
+    #Preview <- c(Preview, artist.results$tracks$preview_url[[i]])
     Followers <- c(Followers, follow)
     Artist.Popularity <- c(Artist.Popularity, popular)
-    Big.Image <- c(Big.Image, artist.results$tracks$album$images[[1]]$url[[1]])
-    Medium.Image <- c(Medium.Image, artist.results$tracks$album$images[[1]]$url[[2]])
-    Small.Image <- c(Small.Image, artist.results$tracks$album$images[[1]]$url[[3]])
+    #Big.Image <- c(Big.Image, artist.results$tracks$album$images[[1]]$url[[1]])
+    #Medium.Image <- c(Medium.Image, artist.results$tracks$album$images[[1]]$url[[2]])
+    #Small.Image <- c(Small.Image, artist.results$tracks$album$images[[1]]$url[[3]])
   }
-  top.ten.data.frame <- data.frame(Name, Artist.Popularity, Song, Popularity, Album, Preview, Followers, Big.Image, Medium.Image, Small.Image)
+  #top.ten.data.frame <- data.frame(Name, Artist.Popularity, Song, Popularity, Album, Preview, Followers, Big.Image, Medium.Image, Small.Image)
+  top.ten.data.frame <- data.frame(Name, Artist.Popularity, Song, Popularity, Album, Followers)
   while (nrow(top.ten.data.frame) < 10) {
-    new.row = data.frame(Name=name.artist, Artist.Popularity=popular, Song="none", Popularity=0, Album="none", Preview ="none", Followers=0, Big.Image="none", Medium.Image="none", Small.Image="none")
+    new.row = data.frame(Name=name.artist, Artist.Popularity=popular, Song="none", Popularity=0, Album="none", Followers=0)
     top.ten.data.frame <- rbind(top.ten.data.frame, new.row)
   }
   return(top.ten.data.frame)
@@ -142,8 +143,8 @@ artist.to.graph <- function(artist.name) {
   return(p.graph(artist.frame))
 }
 
-
-
+# artist.to.graph("drake")
+# 
 
 # ------------------------------ Two artist graph-------------------------------------------------------------------------------------
 
