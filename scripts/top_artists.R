@@ -23,7 +23,7 @@ find.artist.id <- function(name.of.artist) {
   ids <- search.results$artists$items$id
   return(ids[[1]])
 }
-top.10.songs(find.artist.id("kendrick lamar"))
+#top.10.songs(find.artist.id("kendrick lamar"))
 # take in artist ID and give the top songs as a list
 # top 10 songs function
 top.10.songs <- function(artists.id) {
@@ -107,12 +107,12 @@ artists.top.ten.frame <- function(artist.name.search) {
 
 
 
-# Testing below
-artists.top.ten.frame("future")
-artists.top.ten.frame("taylor swift")
-drake.frame <- artists.top.ten.frame("drake")
-taylor.frame <- artists.top.ten.frame("taylor swift")
-View(artists.top.ten.frame("drake"))
+# # Testing below
+# artists.top.ten.frame("future")
+# artists.top.ten.frame("taylor swift")
+# drake.frame <- artists.top.ten.frame("drake")
+# taylor.frame <- artists.top.ten.frame("taylor swift")
+# View(artists.top.ten.frame("drake"))
 
 # ------------------------------ The graph's-------------------------------------------------------------------------------------
 
@@ -129,10 +129,10 @@ p.graph <- function(data.input) {
   return(p) 
 }
 
-artists.top.ten.frame("drake")
-# test graph above
-p.graph(drake.frame)
-p.graph(taylor.frame)
+# artists.top.ten.frame("drake")
+# # test graph above
+# p.graph(drake.frame)
+# p.graph(taylor.frame)
 
 # ------------------------------ Single artist graph-------------------------------------------------------------------------------------
 
@@ -209,11 +209,11 @@ five.artists.to.graph <- function(artist.list) {
 }
 
 # test each of the graphs
-artist.to.graph("drake")
-two.artists.to.graph(c("drake", "taylor swift"))
-three.artists.to.graph(c("drake", "rihanna", "taylor swift"))
-four.artists.to.graph(c("drake", "rihanna", "taylor swift", "beyonce"))
-five.artists.to.graph(c("drake", "rihanna", "taylor swift", "beyonce", "lil yachty"))
+# artist.to.graph("drake")
+# two.artists.to.graph(c("drake", "taylor swift"))
+# three.artists.to.graph(c("drake", "rihanna", "taylor swift"))
+# four.artists.to.graph(c("drake", "rihanna", "taylor swift", "beyonce"))
+# five.artists.to.graph(c("drake", "rihanna", "taylor swift", "beyonce", "lil yachty"))
 
 
 
@@ -224,67 +224,67 @@ five.artists.to.graph(c("drake", "rihanna", "taylor swift", "beyonce", "lil yach
 # ------------------------------ hard code and testing is below------------------------------------------------------------------
 # note that everything is a bit messy here
 
-artist.name <- "drake"
-
-search.url <- paste0("https://api.spotify.com", "/v1/search?q=", artist.name, "&type=artist")
-
-get.data <- GET(search.url, token.spotify)
-
-testing <- fromJSON(toJSON(content(get.data)))
-testing$artists$items$followers
-sort.testing <- testing$artists$items$id
-#hard coded for drake's id
-sort.testing[[1]]
-testing$artists$items$name[[1]]
-# followers
-testing$artists$items$followers$total[[1]]
-# popularity
-testing$artists$items$popularity[[1]]
-# drake's id = 3TVXtAsR1Inumwj472S9r4
-
-# example url: https://api.spotify.com/v1/artists/0OdUWJ0sBjDrqHygGUXeCF
-drake.id <- "06HL4z0CvFAxyc27GXpf02"
-get.url <- paste0("https://api.spotify.com", "/v1/artists/", drake.id, "/top-tracks?country=US")
-get.drake <- GET(get.url, token.spotify)
-blah <- fromJSON(toJSON(content(get.drake)))
-length(blah$tracks$name)
-# drakes results, you can mess around with this using "$" to see what the data contains
-blah$tracks$popularity[[1]]
-blah$tracks$name[[1]]
-
-# this is the data frame for the top 10 songs
-Popularity <- c()
-Song <- c()
-
-for (i in 1:10) {
-  # strtoi function converts strings into integers
-  Popularity <- c(Popularity, strtoi(blah$tracks$popularity[[i]], base = 0L))
-  Song <- c(Song, blah$tracks$name[[i]])
-}
-#strtoi(x, base = 0L)
-# string as factors? (removed)
-testing.data.frame <- data.frame(Popularity, Song)
-filter(testing.data.frame, Popularity == max(Popularity))
-testing.data.frame
-# album name
-blah$tracks$album$name[[1]]
-# artist name
-blah$tracks$artists[[1]]$name
-# hyperlink reference...A link to the Web API endpoint providing full details of the artist. 
-blah$tracks$href
-# preview of the song
-blah$tracks$preview_url[[1]]
+# artist.name <- "drake"
 # 
-#blah$tracks$uri
-# images for the track
-blah$tracks$album$images[[1]]$url[[1]] # 650 x 650 pixels
-blah$tracks$album$images[[1]]$height[[1]] # height 650
-blah$tracks$album$images[[1]]$width[[1]] # width 650
-blah$tracks$album$images[[1]]$url[[2]] # 300 x 300 pixels
-blah$tracks$album$images[[1]]$height[[2]] # height 650
-blah$tracks$album$images[[1]]$width[[2]] # width 650
-blah$tracks$album$images[[1]]$url[[3]] # 64 x 64 pixels
-blah$tracks$album$images[[1]]$height[[3]] # height 650
-blah$tracks$album$images[[1]]$width[[3]] # width
-
-blah$tracks
+# search.url <- paste0("https://api.spotify.com", "/v1/search?q=", artist.name, "&type=artist")
+# 
+# get.data <- GET(search.url, token.spotify)
+# 
+# testing <- fromJSON(toJSON(content(get.data)))
+# testing$artists$items$followers
+# sort.testing <- testing$artists$items$id
+# #hard coded for drake's id
+# sort.testing[[1]]
+# testing$artists$items$name[[1]]
+# # followers
+# testing$artists$items$followers$total[[1]]
+# # popularity
+# testing$artists$items$popularity[[1]]
+# # drake's id = 3TVXtAsR1Inumwj472S9r4
+# 
+# # example url: https://api.spotify.com/v1/artists/0OdUWJ0sBjDrqHygGUXeCF
+# drake.id <- "06HL4z0CvFAxyc27GXpf02"
+# get.url <- paste0("https://api.spotify.com", "/v1/artists/", drake.id, "/top-tracks?country=US")
+# get.drake <- GET(get.url, token.spotify)
+# blah <- fromJSON(toJSON(content(get.drake)))
+# length(blah$tracks$name)
+# # drakes results, you can mess around with this using "$" to see what the data contains
+# blah$tracks$popularity[[1]]
+# blah$tracks$name[[1]]
+# 
+# # this is the data frame for the top 10 songs
+# Popularity <- c()
+# Song <- c()
+# 
+# for (i in 1:10) {
+#   # strtoi function converts strings into integers
+#   Popularity <- c(Popularity, strtoi(blah$tracks$popularity[[i]], base = 0L))
+#   Song <- c(Song, blah$tracks$name[[i]])
+# }
+# #strtoi(x, base = 0L)
+# # string as factors? (removed)
+# testing.data.frame <- data.frame(Popularity, Song)
+# filter(testing.data.frame, Popularity == max(Popularity))
+# testing.data.frame
+# # album name
+# blah$tracks$album$name[[1]]
+# # artist name
+# blah$tracks$artists[[1]]$name
+# # hyperlink reference...A link to the Web API endpoint providing full details of the artist. 
+# blah$tracks$href
+# # preview of the song
+# blah$tracks$preview_url[[1]]
+# # 
+# #blah$tracks$uri
+# # images for the track
+# blah$tracks$album$images[[1]]$url[[1]] # 650 x 650 pixels
+# blah$tracks$album$images[[1]]$height[[1]] # height 650
+# blah$tracks$album$images[[1]]$width[[1]] # width 650
+# blah$tracks$album$images[[1]]$url[[2]] # 300 x 300 pixels
+# blah$tracks$album$images[[1]]$height[[2]] # height 650
+# blah$tracks$album$images[[1]]$width[[2]] # width 650
+# blah$tracks$album$images[[1]]$url[[3]] # 64 x 64 pixels
+# blah$tracks$album$images[[1]]$height[[3]] # height 650
+# blah$tracks$album$images[[1]]$width[[3]] # width
+# 
+# blah$tracks
