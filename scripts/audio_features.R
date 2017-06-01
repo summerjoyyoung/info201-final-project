@@ -28,6 +28,11 @@ GetFeatures <- function(track.id) {
   return(results)
 }
 
+GetArtist <- function(artist.list){
+  artists <- artist.list[1,4]
+  return(artists)
+}
+
 JoysGraph <- function(spotifyPlaylist) {
   # Mary's code to get the top 50 playlist
   spotifyUser <- 'spotify' 
@@ -35,11 +40,8 @@ JoysGraph <- function(spotifyPlaylist) {
   get.Songs <- GET(songs.URL, spotifyToken)
   all.playlist <- jsonlite::fromJSON(toJSON(content(get.Songs)))
   all.playlist.flat <- flatten(all.playlist$items)
-
-  GetArtist <- function(artist.list){
-    artists <- artist.list[1,4]
-    return(artists)
-  }
+  flat.playlist <- flatten(all.playlist$items) %>% 
+    select(track.name, track.id, track.album.name, track.explicit, track.popularity, track.album.album_type)  
   
   artists <- lapply(all.playlist.flat$track.artists, GetArtist)
   track.album.artists <- unlist(artists)
@@ -83,7 +85,7 @@ JoysGraph <- function(spotifyPlaylist) {
                                            y = ~danceability, 
                                            type = 'scatter', 
                                            mode = 'markers', 
-                                           text = ~paste0("Track Name: ", track.name, "\nArtist: ", track.album.artists, "\nTrack Popularity: ", track.popularity)) %>%
+                                           text = ~paste0("Track Name: ", track.name, "\nArtist: ", track.album.artists, "\nTrack Popularity: ", track.popularity)) %>% 
     layout(xaxis = list(showticklabels = FALSE, title = "Track Names"), 
            yaxis = list(title = "Danceability")
            )
@@ -93,5 +95,5 @@ JoysGraph <- function(spotifyPlaylist) {
 # Test Code------------------------------------------------------------------------------------
 # spotifyPlaylist <- '37i9dQZF1DXcBWIGoYBM5M'
 # 
-# JoysGraph('37i9dQZF1DXcBWIGoYBM5M')
+ JoysGraph('37i9dQZF1DXcBWIGoYBM5M')
 
