@@ -26,13 +26,13 @@ shinyServer(function(input, output) {
   })
   
   # Mary Elizabeth's File
-  output$top.50top.50 <- renderPlotly({
-    return(plot_ly(flat.playlist, x = ~track.name, y = ~track.popularity, type = "scatter", hoverinfo = "text",
+  output$top.50.graph <- renderPlotly({
+    plot_ly(flat.playlist, x = ~track.name, y = ~track.popularity, type = "scatter", hoverinfo = "text",
                    text = ~paste("Song: ", unlist(track.name), "</br> Artist: ", as.list(track.artist.name), 
                                  "</br> Popularity: ", unlist(track.popularity), sep = "")) %>%  
              layout(xaxis = list(showticklabels = FALSE, title = "Your Songs"), 
                     yaxis = list(title = "Popularity"),
-                    title = "The Popularity of the Current Top 50 Songs on Spotify"))
+                    title = "The Popularity of the Current Top 50 Songs on Spotify")
   })
 
 })
