@@ -17,15 +17,28 @@ shinyUI(navbarPage(
       tabsetPanel(position = "below",
          tabPanel("About Us",
                   h1("                        Trendy Tunes"),
-                  h4("Trendy Tunes was designed by 4 four students who attend the University of Washington:
+                  p("Trendy Tunes was designed by 4 four students who attend the University of Washington:
                      Amitesh Kataria, Joy Phillips, Aislinn Jeske, and Mary Elizabeth Ward. This application
-                     was built using the Spotify API using the R programming language."),
+                     was built using the Spotify API using the R programming language. This is web address 
+                     for to the API https://api.spotify.com."),
                   br(),
-                  img(src = "https://www.rstudio.com/wp-content/uploads/2014/06/RStudio-Ball.png", width = "200px", height = "200px"),
-                  img(src = "https://spotifyblogcom.files.wordpress.com/2015/02/spotify_logo_cmyk_black1.png", width = "434px", height = "130px"),
-                  h4("Each tab contains a different feature using the Spotify API, and 
-                     each feature provides a description of what it does.")
+                  img(src = "rstudio.png", width = "200px", height = "200px"),
+                  img(src = "spotify_logo.png", width = "434px", height = "130px"),
+                  br(),
+                  br(),
+                  p("Each tab contains a different feature using the Spotify API, and 
+                     each feature provides a description of what it does."),
+                  h3("Our developers"),
+                  p("Amitesh Kataria Joy Phillips, Mary Elizabeth Ward, and Aislinn Jeske"),
+                  img(src = "amitesh.jpg", width = "212px", height = "280px"), #424×560
+                  
+                  img(src = "joy.jpg", width = "212px", height = "280px"),
+                  
+                  img(src = "mary.jpg", width = "212px", height = "280px"),
+                  
+                  img(src = "aislinn.jpg", width = "250px", height = "280px")
                   ),
+                 
          tabPanel("User's Music",
                   h2("Please be patient, it takes about 20 seconds to generate the graph"),
                   h4("This graph shows all the user's songs from their public playlists and graphs them based on Spotify's built in popularity feature."),
