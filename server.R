@@ -5,6 +5,7 @@ source('./scripts/UserProfile.R') # Aislinn's File
 source('./scripts/audio_features.R') # Joy's File
 source('./scripts/top_artists.R') # Amitesh's File
 source('./scripts/top_listened.R') # Mary's File
+#options(shiny.sanitize.errors = TRUE)
 
 
 
