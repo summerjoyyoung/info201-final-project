@@ -10,7 +10,7 @@ shinyUI(navbarPage(
       textInput('artist.name', "Enter the name of an artist to get their top 10 songs", "pink")
     ),
     mainPanel(
-      tabsetPanel(
+      tabsetPanel(position = "below",
          tabPanel("User's Music",
                   h4("Please be patient, it takes about 20 seconds to generate the graph"),
                   plotlyOutput('aislinns.plot'),
@@ -20,8 +20,11 @@ shinyUI(navbarPage(
                   plotlyOutput('joys.plot')
                   ),
          tabPanel("Top 10 Songs for an Artist", 
+                  br(),
+                  h6("Remember to change the artist name by using the widget on the side"),
                   plotlyOutput('amitesh.data')
                   ),
+                  
          tabPanel("Top Songs on Spotify",
                   plotlyOutput('top.50.graph')
                   )

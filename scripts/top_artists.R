@@ -125,7 +125,7 @@ p.graph <- function(data.input) {
   artist <- data.input$Name[1]
   
   p <- plot_ly(data.input, x = ~1:nrow(data.input), y = ~Popularity, type = 'scatter', mode = 'lines+markers', marker = list(size = 8), hoverinfo = "text", text = ~paste0("Artist: ", artist, "\nSong: ", data.input$Song, "\nPopularity Rank: ", data.input$Popularity)) %>%
-    layout(title = "Popularity of Top Songs", xaxis = list(title = "Each Song", zeroline = TRUE, dtick = 1 ), yaxis = list(title = "Popularity Ranking", zeroline = TRUE, range = c(0,100))) %>%
+    layout(title = "Popularity of Top Songs", xaxis = list(title = "Each Song", zeroline = TRUE, dtick = 1), yaxis = list(title = "Popularity Ranking", zeroline = TRUE, range = c(0,100))) %>%
     rangeslider(start = .9, end = 10.1)
   return(p) 
 }
