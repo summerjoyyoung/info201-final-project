@@ -11,6 +11,17 @@ shinyUI(navbarPage(
     ),
     mainPanel(
       tabsetPanel(position = "below",
+         tabPanel("About Us",
+                  h1("                        Trendy Tunes"),
+                  h4("Trendy Tunes was designed by 4 four students who attend the University of Washington:
+                     Amitesh Kataria, Joy Phillips, Aislinn Jeske, and Mary Elizabeth Ward. This application
+                     was built using the Spotify API using the R programming language."),
+                  br(),
+                  img(src = "https://www.rstudio.com/wp-content/uploads/2014/06/RStudio-Ball.png", width = "200px", height = "200px"),
+                  img(src = "https://spotifyblogcom.files.wordpress.com/2015/02/spotify_logo_cmyk_black1.png", width = "434px", height = "130px"),
+                  h4("Each tab contains a different feature using the Spotify API, and 
+                     each feature provides a description of what it does.")
+                  ),
          tabPanel("User's Music",
                   h4("Please be patient, it takes about 20 seconds to generate the graph"),
                   plotlyOutput('aislinns.plot'),
