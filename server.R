@@ -1,11 +1,27 @@
+library(shiny)
 library(dplyr)
+library(plotly)
+source('./scripts/UserProfile.R') # Aislinn's File
+source('./scripts/audio_features.R') # Joy's File
+source('./scripts/top_artists.R') # Amitesh's File
+# source('./scripts/top_listened.R') # Mary's File
 
-source('./scripts/UserProfile.R')
+
 
 shinyServer(function(input, output) {
-  output$plot.value <- renderPlotly({
-    return(CreateGraph({input$user.id}))
+  # Aislinn's File
+  output$aislinns.plot <- renderPlotly({
+    CreateGraph({input$user.id})
+  })
+  output$aislinns.value <- renderText({GetDuration(input$user.id)})
+  
+  # Joy's File
+  output$joys.plot <- renderPlotly({
+    JoysGraph(input$playlist.id)
   })
   
-  output$value <- renderText({GetDuration(input$user.id)})
+  # Amitesh's File
+  output$amitesh.data <- renderPlotly({
+    artists.top.ten.frame(input$artist.name)
+  })
 })
