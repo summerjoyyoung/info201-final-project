@@ -22,6 +22,9 @@ shinyUI(navbarPage(
                   ),
          tabPanel("Amitesh's Panel", 
                   tableOutput('amitesh.data')
+                  ),
+         tabPanel("Mary Elizabeth's Panel",
+                  plotlyOutput('top.50.graph')
                   )
       )
       
