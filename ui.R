@@ -22,6 +22,9 @@ shinyUI(navbarPage(
                   ),
          tabPanel("Amitesh's Panel", 
                   tableOutput('amitesh.data')
+                  ), 
+         tabPanel(h4("Top 50 Ranking Graph"),
+                  plotlyOutput('top.50')
                   )
       )
       
