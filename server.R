@@ -22,7 +22,7 @@ shinyServer(function(input, output) {
 
   # Amitesh's File
   output$amitesh.data <- renderPlotly({
-    artists.top.ten.frame(input$artist.name)
+    artist.to.graph(input$artist.name)
   })
   
   # Mary Elizabeth's File

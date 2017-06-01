@@ -5,9 +5,9 @@ shinyUI(navbarPage(
   titlePanel("Trendy Tunes"),
   sidebarLayout(
     sidebarPanel(
-      textInput('user.id', "Enter the user id", '1295238919'), 
-      textInput('playlist.id', "Enter the playlist id", '37i9dQZF1DXcBWIGoYBM5M'),
-      textInput('artist.name', "Enter the name of an artist to their top songs", 'david bowie')
+      textInput('user.id', "Enter the user id"), 
+      textInput('playlist.id', "Enter the playlist id"),
+      textInput('artist.name', "Enter the name of an artist to their top songs")
     ),
     mainPanel(
       tabsetPanel(
@@ -21,7 +21,7 @@ shinyUI(navbarPage(
                   plotlyOutput('joys.plot')
                   ),
          tabPanel("Amitesh's Panel", 
-                  tableOutput('amitesh.data')
+                  plotlyOutput('amitesh.data')
                   ),
          tabPanel("Mary Elizabeth's Panel",
                   plotlyOutput('top.50.graph')
