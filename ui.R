@@ -27,7 +27,9 @@ shinyUI(navbarPage(
                      each feature provides a description of what it does.")
                   ),
          tabPanel("User's Music",
-                  h4("Please be patient, it takes about 20 seconds to generate the graph"),
+                  h2("Please be patient, it takes about 20 seconds to generate the graph"),
+                  h4("This graph shows all the user's songs from their public playlists and graphs them based on Spotify's built in popularity feature."),
+                  h4("Spotify gives each song a popularity rating based on how many people have listened to it and how recently. An older song that isn't listened to as often will have a lower rating than a popular song that came out last week."),
                   plotlyOutput('aislinns.plot'),
                   textOutput('aislinns.value')
                   ),
@@ -46,6 +48,7 @@ shinyUI(navbarPage(
                   
                   ),
          tabPanel("Top Songs on Spotify",
+                  h4("This graph shows the 50 most popular songs on Spotify right now, featured on Spotify's playlist \"Today's Top Hits\". The x-axis features the top songs from 1-50 and the y-axis is the popularity of each song."),
                   plotlyOutput('top.50.graph')
                   )
       )
