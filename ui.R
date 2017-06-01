@@ -7,6 +7,10 @@ shinyUI(navbarPage(
     sidebarPanel(
       textInput('user.id', "Enter the user id", "1295238919"), 
       textInput('playlist.id', "Enter the playlist id", "37i9dQZF1DX4JAvHpjipBk"),
+      selectInput(inputId = "y",
+                  label = "Y-Axis",
+                  choices = c("danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo", "duration_ms"),
+                  selected = "danceability"),
       textInput('artist.name', "Enter the name of an artist to get their top 10 songs", "kodak black")
     ),
     mainPanel(

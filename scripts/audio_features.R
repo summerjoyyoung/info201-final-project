@@ -33,7 +33,7 @@ GetArtist <- function(artist.list){
   return(artists)
 }
 
-JoysGraph <- function(spotifyPlaylist) {
+JoysGraph <- function(spotifyPlaylist, yaxis) {
   # Mary's code to get the top 50 playlist
   spotifyUser <- 'spotify' 
   songs.URL <- paste0("https://api.spotify.com/v1/users/", spotifyUser, "/playlists/", spotifyPlaylist, "/tracks?fields=items(track)")
@@ -82,18 +82,17 @@ JoysGraph <- function(spotifyPlaylist) {
   # select to change what variable is graphed on the y axis.
   
   p <- playlist.audio.features %>% plot_ly(x = ~track.name, 
-                                           y = ~danceability, 
+                                           y = ~eval(parse(text = yaxis)), 
                                            type = 'scatter', 
                                            mode = 'markers', 
                                            text = ~paste0("Track Name: ", track.name, "\nArtist: ", track.album.artists, "\nTrack Popularity: ", track.popularity)) %>% 
-    layout(xaxis = list(showticklabels = FALSE, title = "Track Names"), 
-           yaxis = list(title = "Danceability")
-           )
+    layout(xaxis = list(showticklabels = FALSE, title = "Track Names"),
+           yaxis = list(title = yaxis))
   return(p)
 }
 
 # Test Code------------------------------------------------------------------------------------
 # spotifyPlaylist <- '37i9dQZF1DXcBWIGoYBM5M'
 # 
-# JoysGraph('37i9dQZF1DXcBWIGoYBM5M')
+# JoysGraph('37i9dQZF1DXcBWIGoYBM5M', 'danceability')
 

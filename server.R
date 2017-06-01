@@ -18,7 +18,7 @@ shinyServer(function(input, output) {
   
   # Joy's File
   output$joys.plot <- renderPlotly({
-    JoysGraph(input$playlist.id)
+    JoysGraph(input$playlist.id, input$y)
   })
 
   # Amitesh's File
