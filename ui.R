@@ -7,7 +7,7 @@ shinyUI(navbarPage(
     sidebarPanel(
       textInput('user.id', "Enter the user id", "1295238919"), 
       textInput('playlist.id', "Enter the playlist id", "37i9dQZF1DX4JAvHpjipBk"),
-      textInput('artist.name', "Enter the name of an artist to their top songs", "pink")
+      textInput('artist.name', "Enter the name of an artist to get their top 10 songs", "pink")
     ),
     mainPanel(
       tabsetPanel(
@@ -19,14 +19,13 @@ shinyUI(navbarPage(
          tabPanel("Songs in a Playlist", 
                   plotlyOutput('joys.plot')
                   ),
-         tabPanel("Songs for an Artist", 
+         tabPanel("Top 10 Songs for an Artist", 
                   plotlyOutput('amitesh.data')
                   ),
          tabPanel("Top Songs on Spotify",
                   plotlyOutput('top.50.graph')
                   )
       )
-      
     )
   )
 ))
