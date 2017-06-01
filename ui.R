@@ -17,7 +17,8 @@ shinyUI(navbarPage(
                   textOutput('aislinns.value')
                   ),
          tabPanel("Songs in a Playlist", 
-                  plotlyOutput('joys.plot')
+                  plotlyOutput('joys.plot'),
+                  h5("The user can input a playlist key into the playlist id text box. It then takes a moment for the graph to load and for the graph to update and load. On the y axis is the audio feature danceablility with the x axis of track names. This allows the user to view how danceablility vairies between songs in a specific playlist. Hover over the plot points to get more information about the specific song.")
                   ),
          tabPanel("Top 10 Songs for an Artist", 
                   br(),
